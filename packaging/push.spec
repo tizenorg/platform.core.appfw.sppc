@@ -1,6 +1,6 @@
 Name:       push
 Summary:    Push services and client library.
-Version:    0.2.20
+Version:    0.2.21
 Release:    1
 Group:      TO_BE_FILLED
 License:    TO_BE_FILLED
@@ -70,7 +70,7 @@ cp -a arm/lib/pkgconfig/push.pc %{buildroot}%{_libdir}/pkgconfig/push.pc
 cp -a arm/lib/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a arm/bin/pushd %{buildroot}%{_bindir}
-cp -a arm/share/PushServerTrust.cer %{buildroot}/usr/share/push/PushServerTrust.cer
+cp -a arm/share/push/PushServerTrust.cer %{buildroot}/usr/share/push/PushServerTrust.cer
 #push-tool
 cp -a arm/bin/push_tool %{buildroot}%{_bindir}
 %else
@@ -82,7 +82,7 @@ cp -a x86/lib/pkgconfig/push.pc %{buildroot}%{_libdir}/pkgconfig/push.pc
 cp -a x86/lib/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a x86/bin/pushd %{buildroot}%{_bindir}
-cp -a x86/share/PushServerTrust.cer %{buildroot}/usr/share/push/PushServerTrust.cer
+cp -a x86/share/push/PushServerTrust.cer %{buildroot}/usr/share/push/PushServerTrust.cer
 #push-tool
 cp -a x86/bin/push_tool %{buildroot}%{_bindir}
 %endif
