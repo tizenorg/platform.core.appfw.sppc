@@ -1,11 +1,11 @@
 Name:       push
 Summary:    Push services and client library.
-Version:    0.2.21
+Version:    0.2.23
 Release:    1
 Group:      TO_BE_FILLED
 License:    TO_BE_FILLED
 Source0:    %{name}-%{version}.tar.gz
-Source1:    push.init
+
 
 %description
 Push services and client library.
@@ -46,6 +46,8 @@ Requires:   %{name}-bin = %{version}-%{release}
 %description tool
 Push service tool
 
+
+
 %prep
 %setup -q
 
@@ -54,12 +56,15 @@ Push service tool
 %install
 rm -rf %{buildroot}
 
-mkdir -p %{buildroot}/etc/init.d
-install -m 0755 %{SOURCE1} %{buildroot}/etc/init.d/pushd
+
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 mkdir -p %{buildroot}%{_includedir}
 mkdir -p %{buildroot}/usr/share/push
+mkdir -p %{buildroot}%{_sysconfdir}/init.d
+mkdir -p %{buildroot}%{_sysconfdir}/rc.d/{rc3.d,rc5.d}
+mkdir -p %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants
+
 
 %ifarch %{arm}
 #libpush
@@ -71,6 +76,11 @@ cp -a arm/lib/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a arm/bin/pushd %{buildroot}%{_bindir}
 cp -a arm/share/push/PushServerTrust.cer %{buildroot}/usr/share/push/PushServerTrust.cer
+cp -a arm/etc/init.d/pushd %{buildroot}%{_sysconfdir}/init.d/pushd
+cp -a arm/etc/rc.d/rc3.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc3.d/S90pushd
+cp -a arm/etc/rc.d/rc5.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc5.d/S90pushd
+cp -a arm/lib/systemd/user/pushd.service %{buildroot}%{_libdir}/systemd/user/pushd.service
+cp -a arm/lib/systemd/user/tizen-middleware.target.wants/pushd.service %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants/pushd.service
 #push-tool
 cp -a arm/bin/push_tool %{buildroot}%{_bindir}
 %else
@@ -83,20 +93,22 @@ cp -a x86/lib/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a x86/bin/pushd %{buildroot}%{_bindir}
 cp -a x86/share/push/PushServerTrust.cer %{buildroot}/usr/share/push/PushServerTrust.cer
+cp -a x86/etc/init.d/pushd %{buildroot}%{_sysconfdir}/init.d/pushd
+cp -a x86/etc/rc.d/rc3.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc3.d/S90pushd
+cp -a x86/etc/rc.d/rc5.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc5.d/S90pushd
+cp -a x86/lib/systemd/user/pushd.service %{buildroot}%{_libdir}/systemd/user/pushd.service
+cp -a x86/lib/systemd/user/tizen-middleware.target.wants/pushd.service %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants/pushd.service
 #push-tool
 cp -a x86/bin/push_tool %{buildroot}%{_bindir}
 %endif
 
 %post bin
-
 mkdir -p /opt/dbspace
 sqlite3 /opt/dbspace/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
 chown root:5000 /opt/dbspace/.push.db
 chown root:5000 /opt/dbspace/.push.db-journal
 chmod 660 /opt/dbspace/.push.db
 chmod 660 /opt/dbspace/.push.db-journal
-ln -s /etc/init.d/pushd /etc/rc.d/rc3.d/S90pushd
-ln -s /etc/init.d/pushd /etc/rc.d/rc5.d/S90pushd
 
 
 _VER="1"
@@ -133,8 +145,31 @@ vconftool unset file/private/push-bin/devtk
 
 %files bin
 %{_bindir}/pushd
-/etc/init.d/pushd
 /usr/share/push/*.cer
+/etc/init.d/pushd
+/etc/rc.d/rc3.d/S90pushd
+/etc/rc.d/rc5.d/S90pushd
+/usr/lib/systemd/user/pushd.service
+/usr/lib/systemd/user/tizen-middleware.target.wants/pushd.service
 
 %files tool
 %{_bindir}/push_tool
+
+%changelog
+* Fri Sep 7 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.23
+- emul check logic is changed(using capi-system-info)
+* Tue Sep 4 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.22
+- decoding of message with space character which is urlencoded to "+"
+* Wed Aug 29 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.21
+- package uninstalled event added
+* Fri Aug 17 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.20
+- debug msg added & some internal function name changed
+* Wed Aug 8 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.19
+- push noti default action is silent, and old key is deleted
+* Wed Aug 8 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.18
+- tapi imei api is changed for new tapi
+* Tue Aug 7 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.17
+- emulator check func is added
+* Wed Jul 25 2012 Jooseok Park <jooseok.park@samsung.com> - 0.2.16
+- OSP Push noti support(alertMessage,..)
+
