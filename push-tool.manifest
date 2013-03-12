@@ -1,0 +1,5 @@
+<manifest>
+	<request>
+		<domain name="push-service"/>
+	</request>
+</manifest>
