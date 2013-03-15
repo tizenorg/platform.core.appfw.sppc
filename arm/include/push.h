@@ -20,6 +20,8 @@
 #include <errno.h>
 #include <app.h>
 
+#define PUSH_APP_DATA_KEY  "http://tizen.org/appcontrol/data/push/appdata"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

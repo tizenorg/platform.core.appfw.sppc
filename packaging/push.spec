@@ -1,7 +1,7 @@
 Name:       push
 Summary:    Push services and client library.
-Version:    0.2.32
-Release:    1
+Version:    0.2.37
+Release:    2
 Group:      TO_BE_FILLED
 License:    TO_BE_FILLED
 Source0:    %{name}-%{version}.tar.gz
@@ -136,8 +136,13 @@ vconftool set -t string file/private/push-bin/dev_info ${_DEV_INFO} ${_GRP} -f
 vconftool set -t string file/private/push-bin/ip_pv ${_IP_PV} ${_GRP} -f
 vconftool set -t int    file/private/push-bin/port_pv ${_PORT_PV} ${_GRP} -f
 vconftool set -t int    file/private/push-bin/ping_int ${_PING_INT} ${_GRP} -f
+vconftool set -t string file/private/push-bin/devtk "" ${_GRP} -f
+vconftool set -t string file/private/push-bin/ip_pri "" ${_GRP} -f
+vconftool set -t int    file/private/push-bin/port_pri -1 ${_GRP} -f
+vconftool set -t string file/private/push-bin/ip_sec "" ${_GRP} -f
+vconftool set -t int    file/private/push-bin/port_sec -1 ${_GRP} -f
 
-vconftool unset file/private/push-bin/devtk
+#vconftool unset file/private/push-bin/devtk
 
 %post -n libpush
 /sbin/ldconfig

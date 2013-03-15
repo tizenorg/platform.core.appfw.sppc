@@ -1,6 +1,13 @@
 <manifest>
 	<define> 
 		<domain name="push-service" policy="restricted" plist="push-bin,push-tool,libpush"/>
+		 <request>
+                        <smack request="system::use_internet" type="rw"/>
+                        <smack request="sys-assert::core" type="rwxat"/>
+		</request>
+		<permit>
+                        <smack permit="system::use_internet" type="w"/>
+		</permit>
 		<provide>
 			<label name="push-service::db"/>
 		</provide>
@@ -12,5 +19,7 @@
 		<filesystem path="/etc/init.d/pushd" label="_" exec_label="none"/>
 		<filesystem path="/etc/rc.d/rc3.d/S90pushd" label="_" exec_label="none"/>
 		<filesystem path="/etc/rc.d/rc5.d/S90pushd" label="_" exec_label="none"/>
+		<filesystem path="/usr/lib/systemd/user/pushd.service" label="_" exec_label="none" />
+		<filesystem path="/usr/lib/systemd/user/tizen-middleware.target.wants/pushd.service" label="_" exec_label="none" />
 	</assign>
 </manifest>
