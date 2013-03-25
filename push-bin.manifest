@@ -7,6 +7,7 @@
 		</request>
 		<permit>
                         <smack permit="system::use_internet" type="w"/>
+						<smack permit="dbus" type="rx"/>
 		</permit>
 		<provide>
 			<label name="push-service::db"/>
