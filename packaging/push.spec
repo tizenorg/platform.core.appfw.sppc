@@ -1,7 +1,7 @@
 Name:       push
 Summary:    Push services and client library.
 Version:    0.2.42
-Release:    2
+Release:    3
 Group:      TO_BE_FILLED
 License:    TO_BE_FILLED
 Source0:    %{name}-%{version}.tar.gz
