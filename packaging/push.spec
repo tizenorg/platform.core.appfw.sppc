@@ -1,9 +1,9 @@
 Name:       push
-Summary:    Push services and client library.
+Summary:    Push services and client library
 Version:    0.2.42
 Release:    3
-Group:      TO_BE_FILLED
-License:    TO_BE_FILLED
+Group:      Application Framwork/Service
+License:    Flora
 Source0:    %{name}-%{version}.tar.gz
 
 
@@ -12,7 +12,7 @@ Push services and client library.
 
 %package -n libpush
 Summary:    Push service client library
-Group:      TO_BE_FILLED
+Group:      Application Framwork/Libraries
 Provides:   libpush.so.0
 
 %description -n libpush
@@ -31,7 +31,7 @@ Push service client library (DEV)
 
 %package bin
 Summary:    Push service daemon
-Group:      TO_BE_FILLED
+Group:      Application Framwork/Service
 Requires:   badge
 
 %description bin
@@ -64,7 +64,7 @@ mkdir -p %{buildroot}%{_includedir}
 mkdir -p %{buildroot}/usr/share/push
 mkdir -p %{buildroot}%{_sysconfdir}/init.d
 mkdir -p %{buildroot}%{_sysconfdir}/rc.d/{rc3.d,rc5.d}
-mkdir -p %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants
+mkdir -p %{buildroot}/usr/lib/systemd/user/tizen-middleware.target.wants
 
 
 %ifarch %{arm}
@@ -81,7 +81,8 @@ cp -a arm/etc/init.d/pushd %{buildroot}%{_sysconfdir}/init.d/pushd
 cp -a arm/etc/rc.d/rc3.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc3.d/S90pushd
 cp -a arm/etc/rc.d/rc5.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc5.d/S90pushd
 cp -a arm/lib/systemd/user/pushd.service %{buildroot}%{_libdir}/systemd/user/pushd.service
-cp -a arm/lib/systemd/user/tizen-middleware.target.wants/pushd.service %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants/pushd.service
+cp -a arm/lib/systemd/user/tizen-middleware.target.wants/pushd.service \
+    %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants/pushd.service
 #push-tool
 cp -a arm/bin/push_tool %{buildroot}%{_bindir}
 %else
@@ -97,8 +98,9 @@ cp -a x86/share/push/PushServerTrust.cer %{buildroot}/usr/share/push/PushServerT
 cp -a x86/etc/init.d/pushd %{buildroot}%{_sysconfdir}/init.d/pushd
 cp -a x86/etc/rc.d/rc3.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc3.d/S90pushd
 cp -a x86/etc/rc.d/rc5.d/S90pushd %{buildroot}%{_sysconfdir}/rc.d/rc5.d/S90pushd
-cp -a x86/lib/systemd/user/pushd.service %{buildroot}%{_libdir}/systemd/user/pushd.service
-cp -a x86/lib/systemd/user/tizen-middleware.target.wants/pushd.service %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants/pushd.service
+cp -a x86/lib/systemd/user/pushd.service %{buildroot}/usr/lib/systemd/user/pushd.service
+cp -a x86/lib/systemd/user/tizen-middleware.target.wants/pushd.service \
+    %{buildroot}/usr/lib/systemd/user/tizen-middleware.target.wants/pushd.service
 #push-tool
 cp -a x86/bin/push_tool %{buildroot}%{_bindir}
 %endif
@@ -147,7 +149,7 @@ vconftool set -t int    file/private/push-bin/port_sec -1 ${_GRP} -f
 %post -n libpush
 /sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun -n libpush -p /sbin/ldconfig
 
 
 %files -n libpush
@@ -155,7 +157,7 @@ vconftool set -t int    file/private/push-bin/port_sec -1 ${_GRP} -f
 %attr(644,-,-) %{_libdir}/libpush.so.*
 
 %files -n libpush-devel
-%{_includedir}/*.h
+%attr(644,-,-) %{_includedir}/*.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libpush.so
 
