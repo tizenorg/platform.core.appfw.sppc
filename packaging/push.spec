@@ -5,6 +5,7 @@ Release:    3
 Group:      Application Framwork/Service
 License:    Flora
 Source0:    %{name}-%{version}.tar.gz
+Source1001: 	push.manifest
 
 
 %description
@@ -51,6 +52,7 @@ Push service tool
 
 %prep
 %setup -q
+cp %{SOURCE1001} .
 
 %build
 
@@ -153,16 +155,17 @@ vconftool set -t int    file/private/push-bin/port_sec -1 ${_GRP} -f
 
 
 %files -n libpush
-%manifest libpush.manifest
+%manifest %{name}.manifest
 %attr(644,-,-) %{_libdir}/libpush.so.*
 
 %files -n libpush-devel
+%manifest %{name}.manifest
 %attr(644,-,-) %{_includedir}/*.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libpush.so
 
 %files bin
-%manifest push-bin.manifest
+%manifest %{name}.manifest
 %{_bindir}/pushd
 /usr/share/push/*.cer
 /etc/init.d/pushd
@@ -172,7 +175,7 @@ vconftool set -t int    file/private/push-bin/port_sec -1 ${_GRP} -f
 /usr/lib/systemd/user/tizen-middleware.target.wants/pushd.service
 
 %files tool
-%manifest push-tool.manifest
+%manifest %{name}.manifest
 %{_bindir}/push_tool
 
 %changelog
