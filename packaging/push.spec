@@ -107,12 +107,12 @@ cp -a x86/lib/systemd/user/tizen-middleware.target.wants/pushd.service \
 cp -a x86/bin/push_tool %{buildroot}%{_bindir}
 %endif
 
-if [ -f /usr/lib/rpm-plugins/msm.so ]
-then
+#if [ -f /usr/lib/rpm-plugins/msm.so ]
+#then
 #	chsmack -a "_" -e "_" %{buildroot}/etc/init.d/pushd
 #	chsmack -a "_" -e "_" %{buildroot}/etc/rc.d/rc3.d/S90pushd
 #	chsmack -a "_" -e "_" %{buildroot}/etc/rc.d/rc5.d/S90pushd
-fi
+#fi
 
 %post bin
 mkdir -p /opt/dbspace
