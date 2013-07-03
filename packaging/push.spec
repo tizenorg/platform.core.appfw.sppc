@@ -105,13 +105,6 @@ cp -a x86/lib/systemd/user/tizen-middleware.target.wants/pushd.service \
 cp -a x86/bin/push_tool %{buildroot}%{_bindir}
 %endif
 
-if [ -f /usr/lib/rpm-plugins/msm.so ]
-then
-	chsmack -a "_" -e "_" %{buildroot}/etc/init.d/pushd
-	chsmack -a "_" -e "_" %{buildroot}/etc/rc.d/rc3.d/S90pushd
-	chsmack -a "_" -e "_" %{buildroot}/etc/rc.d/rc5.d/S90pushd
-fi
-
 %post bin
 mkdir -p /opt/dbspace
 sqlite3 /opt/dbspace/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
@@ -120,8 +113,6 @@ chown root:5000 /opt/dbspace/.push.db-journal
 chmod 660 /opt/dbspace/.push.db
 chmod 660 /opt/dbspace/.push.db-journal
 
-chsmack -a 'push-service::db' /opt/dbspace/.push.db
-chsmack -a 'push-service::db' /opt/dbspace/.push.db-journal
 
 _VER="1"
 _DEV_TYPE="00000000"
