@@ -1,0 +1,8 @@
+Change-Id: Ie97ed8571f10aa2738b6fc29cbb0e7bb2ce0368c
+Code-Review+2: Ryan Ware <ware@linux.intel.com>
+Verified+1: Ryan Ware <ware@linux.intel.com>
+Submitted-by: Ryan Ware <ware@linux.intel.com>
+Submitted-at: Mon, 08 Jul 2013 09:49:18 -0700
+Reviewed-on: https://review.tizen.org/gerrit/5152
+Project: platform/core/appfw/sppc
+Branch: refs/heads/tizen
