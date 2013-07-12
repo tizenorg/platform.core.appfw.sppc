@@ -5,7 +5,7 @@ Release:    3
 Group:      Application Framwork/Service
 License:    Flora
 Source0:    %{name}-%{version}.tar.gz
-Source1001: 	push.manifest
+Source1001: %{name}.manifest
 
 
 %description
