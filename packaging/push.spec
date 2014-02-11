@@ -9,6 +9,8 @@ Source1001:	libpush.manifest
 Source1002:	libpush-devel.manifest
 Source1003:	%{name}-bin.manifest
 Source1004:	%{name}-tool.manifest
+Source1005:	init_push_DB.sh
+BuildRequires: pkgconfig(libtzplatform-config)
 
 
 %description
@@ -117,39 +119,10 @@ cp -a x86/bin/push_tool %{buildroot}%{_bindir}
 #	chsmack -a "_" -e "_" %{buildroot}/etc/rc.d/rc5.d/S90pushd
 #fi
 
+install -D -m 0750 %{SOURCE1005} %{buildroot}%{_datadir}/%{name}/init_push_DB.sh
+
 %post bin
-mkdir -p /opt/dbspace
-sqlite3 /opt/dbspace/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
-chown root:5000 /opt/dbspace/.push.db
-chown root:5000 /opt/dbspace/.push.db-journal
-chmod 660 /opt/dbspace/.push.db
-chmod 660 /opt/dbspace/.push.db-journal
-
-#chsmack -a 'push-service::db' /opt/dbspace/.push.db
-#chsmack -a 'push-service::db' /opt/dbspace/.push.db-journal
-
-_VER="1"
-_DEV_TYPE="00000000"
-_DEV_INFO="device.model=ssltest"
-_IP_PV="gld.push.samsungosp.com"
-_PORT_PV=5223
-#ping interval {120,240,480,960,1920}
-_PING_INT=480
-_GRP="-g 5000"
-
-vconftool set -t string file/private/push-bin/version ${_VER} ${_GRP} -f
-vconftool set -t string file/private/push-bin/dev_type ${_DEV_TYPE} ${_GRP} -f
-vconftool set -t string file/private/push-bin/dev_info ${_DEV_INFO} ${_GRP} -f
-vconftool set -t string file/private/push-bin/ip_pv ${_IP_PV} ${_GRP} -f
-vconftool set -t int    file/private/push-bin/port_pv ${_PORT_PV} ${_GRP} -f
-vconftool set -t int    file/private/push-bin/ping_int ${_PING_INT} ${_GRP} -f
-vconftool set -t string file/private/push-bin/devtk "" ${_GRP} -f
-vconftool set -t string file/private/push-bin/ip_pri "" ${_GRP} -f
-vconftool set -t int    file/private/push-bin/port_pri -1 ${_GRP} -f
-vconftool set -t string file/private/push-bin/ip_sec "" ${_GRP} -f
-vconftool set -t int    file/private/push-bin/port_sec -1 ${_GRP} -f
-
-#vconftool unset file/private/push-bin/devtk
+%{_datadir}/%{name}/init_push_DB.sh
 
 %post -n libpush
 /sbin/ldconfig
@@ -176,6 +149,7 @@ vconftool set -t int    file/private/push-bin/port_sec -1 ${_GRP} -f
 /etc/rc.d/rc5.d/S90pushd
 /usr/lib/systemd/user/pushd.service
 /usr/lib/systemd/user/tizen-middleware.target.wants/pushd.service
+%{_datadir}/%{name}/init_push_DB.sh
 
 %files tool
 %manifest %{name}-tool.manifest
