@@ -1,0 +1,52 @@
+<manifest>
+	<define>
+		<domain name="push-service" policy="restricted" plist="push-bin"/>
+		<request>
+			<smack request="system::use_internet" type="rw"/>
+			<smack request="sys-assert::core" type="rwxat"/>
+			<smack request="telephony_framework::api_modem" type="r"/>
+			<smack request="telephony_framework::api_sim" type="r"/>
+			<smack request="telephony_framework::api_network" type="r"/>
+			<smack request="telephony_framework::properties" type="rw"/>
+			<smack request="pkgmgr::info" type = "r"/>
+			<smack request="pkgmgr::db" type = "rlx"/>
+			<smack request="data-provider-master::notification" type="rw"/>
+			<smack request="data-provider-master::notification.client" type="w"/>
+			<smack request="data-provider-master::badge" type="rw"/>
+			<smack request="data-provider-master::badge.client" type="w"/>
+			<smack request="connman" type="rw" />
+			<smack request="connman::get" type="rw" />
+			<smack request="connman::profile" type="rw" />
+			<smack request="net-config" type="rw" />
+			<smack request="deviced::display" type="rw" />
+			<smack request="secure-storage" type="rw" />
+			<smack request="security-server::api-privilege-by-pid" type="w"/>
+			<smack request="alarm-server::alarm" type = "w"/>
+			<smack request="device::app_logging" type = "rw"/>
+			<smack request="device::sys_logging" type = "rw"/>
+			<smack request="push-service::db" type = "rw"/>
+			<smack request="system::vconf" type = "rwxat"/>
+			<smack request="system::vconf_inhouse" type = "rl"/>
+			<smack request="system::vconf_network" type = "rl"/>
+			<smack request="system::vconf_setting" type = "rl"/>
+			<smack request="badge::db" type = "rl"/>
+			<smack request="aul::launch" type = "x"/>
+		</request>
+		<permit>
+			<smack permit="system::use_internet" type="w"/>
+			<smack permit="dbus" type="rx"/>
+		</permit>
+		<provide>
+			<label name="push-service::db"/>
+			<label name="push-service::push"/>
+		</provide>
+	</define>
+	<request>
+		<domain name="push-service"/>
+	</request>
+	<assign>
+		<filesystem path="/etc/init.d/pushd" label="_" exec_label="none"/>
+		<filesystem path="/etc/rc.d/rc3.d/S90pushd" label="_" exec_label="none"/>
+		<filesystem path="/etc/rc.d/rc5.d/S90pushd" label="_" exec_label="none"/>
+	</assign>
+</manifest>

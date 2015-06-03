@@ -1,0 +1,9 @@
+<manifest>
+	<request>
+		<domain name="_"/>
+	</request>
+        <assign>
+                <filesystem path="/usr/lib/libpush.so.0.2.12" label="_"/>
+                <filesystem path="/usr/lib/libpush.so.0" label="_"/>
+        </assign>
+</manifest>

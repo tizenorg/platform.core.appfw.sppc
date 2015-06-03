@@ -1,9 +1,0 @@
-[Unit]
-Description=Pushd service
-
-[Service]
-Type=forking
-ExecStart=/usr/bin/pushd
-
-[Install]
-WantedBy=tizen-middleware.target

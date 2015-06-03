@@ -1,0 +1,9 @@
+<manifest>
+	<define>
+		<domain name="push-tool" policy="restricted" plist="push-tool"/>
+		<request>
+			<smack request="push-service::db" type="rw"/>
+			<smack request="push-service::push" type="w"/>
+		</request>
+	</define>
+</manifest>
