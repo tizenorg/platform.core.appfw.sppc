@@ -42,7 +42,7 @@
 		</provide>
 	</define>
 	<request>
-		<domain name="push-service"/>
+		<domain name="_"/>
 	</request>
 	<assign>
 		<filesystem path="/etc/init.d/pushd" label="_" exec_label="none"/>

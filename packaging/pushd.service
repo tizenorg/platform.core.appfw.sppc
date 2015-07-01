@@ -9,7 +9,6 @@ Restart=always
 MemoryLimit=10M
 User=system
 Group=system
-SmackProcessLabel=push-service
 
 [Install]
 WantedBy=multi-user.target

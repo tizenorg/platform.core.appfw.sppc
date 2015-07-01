@@ -142,9 +142,6 @@ chown system:5000 /opt/usr/dbspace/.push.db-journal
 chmod 660 /opt/usr/dbspace/.push.db
 chmod 660 /opt/usr/dbspace/.push.db-journal
 
-chsmack -a 'push-service::db' /opt/usr/dbspace/.push.db
-chsmack -a 'push-service::db' /opt/usr/dbspace/.push.db-journal
-
 %post -n libpush
 /sbin/ldconfig
 
