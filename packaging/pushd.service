@@ -1,14 +1,12 @@
 [Unit]
 Description=Push daemon
-After=tizen-runtime.target
 
 [Service]
-Type=forking
+Type=simple
 ExecStart=/usr/bin/pushd
 Restart=always
+RestartSec=1
 MemoryLimit=10M
-User=system
-Group=system
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

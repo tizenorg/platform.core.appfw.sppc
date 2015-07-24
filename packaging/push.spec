@@ -62,13 +62,9 @@ Push service tool
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}%{_libdir}/systemd/system/multi-user.target.wants
-install -m 0644 %{SOURCE1} %{buildroot}%{_libdir}/systemd/system/pushd.service
-ln -s ../pushd.service %{buildroot}%{_libdir}/systemd/system/multi-user.target.wants/pushd.service
-
-mkdir -p %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants
-cp %{SOURCE1} %{buildroot}%{_libdir}/systemd/user/pushd.service
-ln -s ../pushd.service %{buildroot}%{_libdir}/systemd/user/tizen-middleware.target.wants/
+mkdir -p %{buildroot}%{_unitdir_user}/default.target.wants
+install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir_user}/pushd.service
+ln -s ../pushd.service %{buildroot}%{_unitdir_user}/default.target.wants/pushd.service
 
 mkdir -p %{buildroot}/usr/share/license
 cp -f LICENSE %{buildroot}/usr/share/license/%{name}
@@ -135,12 +131,12 @@ cp -a x86/share/push/*.cer %{buildroot}/usr/share/push/
 
 
 %post bin
-mkdir -p /opt/usr/dbspace
-sqlite3 /opt/usr/dbspace/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
-chown system:5000 /opt/usr/dbspace/.push.db
-chown system:5000 /opt/usr/dbspace/.push.db-journal
-chmod 660 /opt/usr/dbspace/.push.db
-chmod 660 /opt/usr/dbspace/.push.db-journal
+#mkdir -p /usr/dbspace
+#sqlite3 /usr/dbspace/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
+#chown system:system /usr/dbspace/.push.db
+#chown system:system /usr/dbspace/.push.db-journal
+#chmod 660 /usr/dbspace/.push.db
+#chmod 660 /usr/dbspace/.push.db-journal
 
 %post -n libpush
 /sbin/ldconfig
@@ -158,7 +154,7 @@ chmod 660 /opt/usr/dbspace/.push.db-journal
 
 %files bin
 %manifest push-bin.manifest
-%attr(755,system,system)%{_bindir}/pushd
+%{_bindir}/pushd
 %attr(644,system,system)/usr/share/push/*.cer
 %attr(644,system,system)/usr/share/license/%{name}
 
@@ -168,10 +164,8 @@ chmod 660 /opt/usr/dbspace/.push.db-journal
 %attr(644,system,system)/usr/share/push/prd-dl-key.pem
 %endif
 
-%attr(755,system,system)%{_libdir}/systemd/user/pushd.service
-%attr(755,system,system)%{_libdir}/systemd/user/tizen-middleware.target.wants/pushd.service
-%attr(755,system,system)%{_libdir}/systemd/system/multi-user.target.wants/pushd.service
-%attr(755,system,system)%{_libdir}/systemd/system/pushd.service
+%{_unitdir_user}/pushd.service
+%{_unitdir_user}/default.target.wants/pushd.service
 
 %files tool
 %manifest push-tool.manifest
