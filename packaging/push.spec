@@ -5,7 +5,7 @@ Summary:    Push services and client library
 Version:    0.4.17
 Release:    1
 Group:      Application Framework/Service
-License:    Apache-2.0
+License:    SAMSUNG and Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
 Source1:    pushd.service
 Requires(post): /sbin/ldconfig
@@ -87,20 +87,6 @@ cp -a push.pc %{buildroot}%{_libdir}/pkgconfig/
 mkdir -p %{buildroot}/usr/share/push/
 mkdir -p %{buildroot}%{_bindir}
 
-%ifarch aarch64
-#libpush
-cp -a aarch64/lib64/libpush.so.* %{buildroot}%{_libdir}
-#libpush-devel
-cp -a aarch64/lib64/libpush.so %{buildroot}%{_libdir}
-#push-bin
-cp -a aarch64/bin/pushd %{buildroot}%{_bindir}
-cp -a aarch64/bin/push_tool %{buildroot}%{_bindir}
-cp -a aarch64/share/push/*.cer %{buildroot}/usr/share/push/
-%if %{_support_weblog}
-	aarch64/bin/pushlog_tool
-%endif
-%endif
-
 %ifarch %{arm}
 #libpush
 cp -a arm/lib/libpush.so.* %{buildroot}%{_libdir}
@@ -115,7 +101,21 @@ cp -a arm/share/push/*.cer %{buildroot}/usr/share/push/
 %endif
 %endif
 
-%ifarch %{ix86} x86_64
+%ifarch aarch64
+#libpush
+cp -a aarch64/lib64/libpush.so.* %{buildroot}%{_libdir}
+#libpush-devel
+cp -a aarch64/lib64/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a aarch64/bin/pushd %{buildroot}%{_bindir}
+cp -a aarch64/bin/push_tool %{buildroot}%{_bindir}
+cp -a aarch64/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	aarch64/bin/pushlog_tool
+%endif
+%endif
+
+%ifarch %{ix86}
 #libpush
 cp -a x86/lib/libpush.so.* %{buildroot}%{_libdir}
 #libpus-devel
@@ -129,6 +129,19 @@ cp -a x86/share/push/*.cer %{buildroot}/usr/share/push/
 %endif
 %endif
 
+%ifarch x86_64
+#libpush
+cp -a x86_64/lib64/libpush.so.* %{buildroot}%{_libdir}
+#libpus-devel
+cp -a x86_64/lib64/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a x86_64/bin/pushd %{buildroot}%{_bindir}
+cp -a x86_64/bin/push_tool %{buildroot}%{_bindir}
+cp -a x86_64/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	x86_64/bin/pushlog_tool
+%endif
+%endif
 
 %post bin
 #mkdir -p /usr/dbspace
