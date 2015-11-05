@@ -1,5 +1,6 @@
 [Unit]
 Description=Push daemon
+After=dbus.service
 
 [Service]
 Type=simple
@@ -10,3 +11,4 @@ MemoryLimit=10M
 
 [Install]
 WantedBy=default.target
+
