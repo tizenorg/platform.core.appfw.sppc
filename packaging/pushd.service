@@ -10,5 +10,4 @@ RestartSec=1
 MemoryLimit=10M
 
 [Install]
-WantedBy=default.target
-
+WantedBy=multi-user.target
