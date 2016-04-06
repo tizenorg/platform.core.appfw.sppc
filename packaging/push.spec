@@ -66,12 +66,12 @@ mkdir -p %{buildroot}%{_unitdir_user}/default.target.wants
 install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir_user}/pushd.service
 ln -s ../pushd.service %{buildroot}%{_unitdir_user}/default.target.wants/pushd.service
 
-mkdir -p %{buildroot}/%{TZ_SYS_RO_SHARE}/license
-cp -f LICENSE %{buildroot}/%{TZ_SYS_RO_SHARE}/license/%{name}
+mkdir -p %{buildroot}/usr/share/license
+cp -f LICENSE %{buildroot}/usr/share/license/%{name}
 
 %if %{_support_weblog}
-cp -a share/push/push_sslkey.pem %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
-cp -a share/push/prd-dl-key.pem %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
+cp -a share/push/push_sslkey.pem %{buildroot}/usr/share/push/
+cp -a share/push/prd-dl-key.pem %{buildroot}/usr/share/push/
 %endif
 
 mkdir -p %{buildroot}%{_includedir}
@@ -84,7 +84,7 @@ cp -a include/push.h %{buildroot}%{_includedir}
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 cp -a push.pc %{buildroot}%{_libdir}/pkgconfig/
 
-mkdir -p %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
+mkdir -p %{buildroot}/usr/share/push/
 mkdir -p %{buildroot}%{_bindir}
 
 %ifarch %{arm}
@@ -95,7 +95,7 @@ cp -a arm/lib/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a arm/bin/pushd %{buildroot}%{_bindir}
 cp -a arm/bin/push_tool %{buildroot}%{_bindir}
-cp -a arm/share/push/*.cer %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
+cp -a arm/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	arm/bin/pushlog_tool
 %endif
@@ -109,7 +109,7 @@ cp -a aarch64/lib64/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a aarch64/bin/pushd %{buildroot}%{_bindir}
 cp -a aarch64/bin/push_tool %{buildroot}%{_bindir}
-cp -a aarch64/share/push/*.cer %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
+cp -a aarch64/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	aarch64/bin/pushlog_tool
 %endif
@@ -123,7 +123,7 @@ cp -a x86/lib/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a x86/bin/pushd %{buildroot}%{_bindir}
 cp -a x86/bin/push_tool %{buildroot}%{_bindir}
-cp -a x86/share/push/*.cer %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
+cp -a x86/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	x86/bin/pushlog_tool
 %endif
@@ -137,7 +137,7 @@ cp -a x86_64/lib64/libpush.so %{buildroot}%{_libdir}
 #push-bin
 cp -a x86_64/bin/pushd %{buildroot}%{_bindir}
 cp -a x86_64/bin/push_tool %{buildroot}%{_bindir}
-cp -a x86_64/share/push/*.cer %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
+cp -a x86_64/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	x86_64/bin/pushlog_tool
 %endif
@@ -168,13 +168,13 @@ cp -a x86_64/share/push/*.cer %{buildroot}/%{TZ_SYS_RO_SHARE}/push/
 %files bin
 %manifest push-bin.manifest
 %{_bindir}/pushd
-%attr(644,system,system)/%{TZ_SYS_RO_SHARE}/push/*.cer
-%attr(644,system,system)/%{TZ_SYS_RO_SHARE}/license/%{name}
+%attr(644,system,system)/usr/share/push/*.cer
+%attr(644,system,system)/usr/share/license/%{name}
 
 # This is a certificate file to access to logging server by HTTPS.
 %if %{_support_weblog}
-%attr(644,system,system)/%{TZ_SYS_RO_SHARE}/push/push_sslkey.pem
-%attr(644,system,system)/%{TZ_SYS_RO_SHARE}/push/prd-dl-key.pem
+%attr(644,system,system)/usr/share/push/push_sslkey.pem
+%attr(644,system,system)/usr/share/push/prd-dl-key.pem
 %endif
 
 %{_unitdir_user}/pushd.service
