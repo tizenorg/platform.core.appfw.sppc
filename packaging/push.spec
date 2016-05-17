@@ -2,7 +2,7 @@
 
 Name:       push
 Summary:    Push services and client library
-Version:    0.4.31
+Version:    0.4.32
 Release:    1
 Group:      Application Framework/Service
 License:    Apache-2.0
