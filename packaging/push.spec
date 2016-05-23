@@ -2,7 +2,7 @@
 
 Name:       push
 Summary:    Push services and client library
-Version:    0.4.31
+Version:    0.4.32
 Release:    1
 Group:      Application Framework/Service
 License:    Apache-2.0
@@ -88,6 +88,8 @@ mkdir -p %{buildroot}/usr/share/push/
 mkdir -p %{buildroot}%{_bindir}
 
 %ifarch %{arm}
+
+%if "%{profile}" == "mobile"
 #libpush
 cp -a arm/lib/libpush.so.* %{buildroot}%{_libdir}
 #libpus-devel
@@ -99,6 +101,22 @@ cp -a arm/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	arm/bin/pushlog_tool
 %endif
+%endif
+
+%if "%{profile}" == "tv"
+#libpush
+cp -a arm_tv/lib/libpush.so.* %{buildroot}%{_libdir}
+#libpus-devel
+cp -a arm_tv/lib/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a arm_tv/bin/pushd %{buildroot}%{_bindir}
+cp -a arm_tv/bin/push_tool %{buildroot}%{_bindir}
+cp -a arm_tv/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	arm_tv/bin/pushlog_tool
+%endif
+%endif
+
 %endif
 
 %ifarch aarch64
