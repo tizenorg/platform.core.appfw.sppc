@@ -33,6 +33,17 @@ extern "C" {
  * @{
  */
 
+/*
+ * @brief This is key string for getting extra data of App Control response.
+ * @since_tizen 3.0
+ * @remarks Your application could be launched in the background by push service. \n
+ *			If you want to know what push operation makes your application wake up, use app_control_get_extra_data() with below key. \n
+ *			In the case that your application is launched by push notification with "LAUNCH" option, you can see a value, "notification" in App Control callback. \n
+ *			On the other hand, when the state of registration changed, you can find the other value, "registration_change".
+ * @see app_control_get_extra_data()
+ */
+#define APP_CONTROL_DATA_PUSH_LAUNCH_TYPE "http://tizen.org/appcontrol/data/push/launch_type"
+
 /**
  * @brief Enumerations of error codes for push API.
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
@@ -53,9 +64,9 @@ typedef enum {
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
 typedef enum {
-	PUSH_SERVICE_STATE_REGISTERED,   /**< Registred */
+	PUSH_SERVICE_STATE_REGISTERED,   /**< Registered */
 	PUSH_SERVICE_STATE_UNREGISTERED, /**< Unregistered */
-	PUSH_SERVICE_STATE_PROVISIONING_IPCHANGE, /**< To change the provisining server IP */
+	PUSH_SERVICE_STATE_PROVISIONING_IPCHANGE, /**< To change the provisioning server IP */
 	PUSH_SERVICE_STATE_PING_CHANGE,       /**< Ping interval is changing */
 	PUSH_SERVICE_STATE_ERROR,       /**< Error */
 } push_service_state_e;
@@ -158,8 +169,8 @@ int push_service_connect(const char *push_app_id,
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @remarks If you call this function in the push callback functions,\n
  *          it may cause your application to crash.\n
- * 			The specific error code can be obtained using the get_last_result()\n
- * 			Error codes are described in the exception section.
+ *			The specific error code can be obtained using the get_last_result()\n
+ *			Error codes are described in the exception section.
  * @param[in] connection The connection handle to the push service
  * @exception #PUSH_SERVICE_ERROR_NONE Successful
  * @exception #PUSH_SERVICE_ERROR_INVALID_PARAMETER Invalid parameter
@@ -216,7 +227,7 @@ int push_service_deregister(push_service_connection_h connection, push_service_r
  *			option or a user clicks a notification in the quick panel,\n
  *          the push daemon forcibly launches the app and delivers the\n
  *          notification to the app as a bundle. This function returns\n
- *			the payload data in the notificaiton.
+ *			the payload data in the notification.
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/push
@@ -249,7 +260,7 @@ char *push_service_app_control_to_noti_data(app_control_h app_control, char *ope
  *			option or a user clicks a notification in the quick panel,\n
  *          the push daemon forcibly launches the app and delivers the\n
  *          notification to the app as a bundle. This function returns\n
- *			the notificaiton from the bundle.
+ *			the notification from the bundle.
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/push
@@ -270,7 +281,7 @@ char *push_service_app_control_to_noti_data(app_control_h app_control, char *ope
  * @retval #PUSH_SERVICE_ERROR_NOT_CONNECTED Connection to the daemon failed
  * @retval #PUSH_SERVICE_ERROR_PERMISSION_DENIED No push privilege
  * @retval #PUSH_SERVICE_ERROR_NOT_SUPPORTED Not supported feature
- * @see push_service_free_notificaiton()
+ * @see push_service_free_notification()
  * @see app_control_get_operation()
  */
 int push_service_app_control_to_notification(app_control_h app_control, char *operation, push_service_notification_h *noti);

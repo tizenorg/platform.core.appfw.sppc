@@ -2,7 +2,7 @@
 
 Name:       push
 Summary:    Push services and client library
-Version:    0.4.32
+Version:    0.4.33
 Release:    1
 Group:      Application Framework/Service
 License:    Apache-2.0
@@ -87,7 +87,9 @@ cp -a push.pc %{buildroot}%{_libdir}/pkgconfig/
 mkdir -p %{buildroot}/usr/share/push/
 mkdir -p %{buildroot}%{_bindir}
 
+
 %ifarch %{arm}
+
 %if "%{profile}" == "mobile"
 #libpush
 cp -a arm/lib/libpush.so.* %{buildroot}%{_libdir}
@@ -115,7 +117,23 @@ cp -a arm_tv/share/push/*.cer %{buildroot}/usr/share/push/
 	arm_tv/bin/pushlog_tool
 %endif
 %endif
+
+%if "%{profile}" == "wearable"
+#libpush
+cp -a arm_wearable/lib/libpush.so.* %{buildroot}%{_libdir}
+#libpus-devel
+cp -a arm_wearable/lib/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a arm_wearable/bin/pushd %{buildroot}%{_bindir}
+cp -a arm_wearable/bin/push_tool %{buildroot}%{_bindir}
+cp -a arm_wearable/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	arm_wearable/bin/pushlog_tool
 %endif
+%endif
+
+%endif
+
 
 %ifarch aarch64
 #libpush
@@ -131,7 +149,10 @@ cp -a aarch64/share/push/*.cer %{buildroot}/usr/share/push/
 %endif
 %endif
 
+
 %ifarch %{ix86}
+
+%if "%{profile}" == "mobile"
 #libpush
 cp -a x86/lib/libpush.so.* %{buildroot}%{_libdir}
 #libpus-devel
@@ -144,6 +165,23 @@ cp -a x86/share/push/*.cer %{buildroot}/usr/share/push/
 	x86/bin/pushlog_tool
 %endif
 %endif
+
+%if "%{profile}" == "wearable"
+#libpush
+cp -a x86_wearable/lib/libpush.so.* %{buildroot}%{_libdir}
+#libpus-devel
+cp -a x86_wearable/lib/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a x86_wearable/bin/pushd %{buildroot}%{_bindir}
+cp -a x86_wearable/bin/push_tool %{buildroot}%{_bindir}
+cp -a x86_wearable/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	x86_wearable/bin/pushlog_tool
+%endif
+%endif
+
+%endif
+
 
 %ifarch x86_64
 #libpush
@@ -158,6 +196,7 @@ cp -a x86_64/share/push/*.cer %{buildroot}/usr/share/push/
 	x86_64/bin/pushlog_tool
 %endif
 %endif
+
 
 %post bin
 #mkdir -p /usr/dbspace

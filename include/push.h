@@ -182,7 +182,7 @@ void push_disconnect(push_connection_h connection);
  * @post For successful result, the state callback should be invoked.
  * @see push_deregister()
  */
-int push_register(push_connection_h connection,	app_control_h app_control,
+int push_register(push_connection_h connection, app_control_h app_control,
 		push_result_cb result_callback, void *user_data);
 
 /**
@@ -205,6 +205,53 @@ int push_register(push_connection_h connection,	app_control_h app_control,
  */
 int push_deregister(push_connection_h connection, push_result_cb result_callback,
 		void *user_data);
+
+/**
+ * @brief Registers an daemon dbus call information.
+ * @since_tizen @if TV 2.4 @endif
+ * @privlevel platform
+ * @param[in] connection The connection handle to the push service
+ * @param[in] result_callback  Result callback function
+ * @param[in] dbus_bus_name  The string of dbus bus name to be called
+ * @param[in] dbus_object_path  The string of dbus object path name to be called
+ * @param[in] dbus_interface_name  The string of dbus interface name to be called
+ * @param[in] dbus_method_name  The string of dbus method name to be called
+ * @param[in] user_data  The user data to pass to @a result_cb
+ * @return @c 0 on success,
+ *         otherwise a negative error value
+ * @retval #PUSH_ERROR_NONE Successful
+ * @retval #PUSH_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval #PUSH_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval #PUSH_ERROR_NOT_CONNECTED No connection to the push service
+ * @retval #PUSH_ERROR_OPERATION_FAILED Operation failed
+ * @pre The application should be registered to the push service.
+ * @post For successful result, you must clear dbus call infomaion with push_deregister_dbus_call_info
+ *         before deregister your daemon service.
+ * @see push_deregister() and push_register_dbus_call_info
+ */
+int push_register_dbus_call_info(struct push_connection_s *conn, push_result_cb cb,
+		const char *dbus_bus_name, const char *dbus_object_path, const char *dbus_interface_name,
+		const char *dbus_method_name, void *user_data);
+
+/**
+ * @brief Deregisters an daemon dbus call information.
+ * @since_tizen @if TV 2.4 @endif
+ * @privlevel platform
+ * @param[in] connection The connection handle to the push service
+ * @param[in] result_callback  Result callback function
+ * @param[in] user_data  The user data to pass to @a result_cb
+ * @return @c 0 on success,
+ *         otherwise a negative error value
+ * @retval #PUSH_ERROR_NONE Successful
+ * @retval #PUSH_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval #PUSH_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval #PUSH_ERROR_NOT_CONNECTED No connection to the push service
+ * @retval #PUSH_ERROR_OPERATION_FAILED Operation failed
+ * @pre The application should be connected to the push service, and dbus call info was registerd.
+ * @post For successful result, no more push dbus call activated.
+ * @see push_register() and push_register_dbus_call_info
+ */
+int push_deregister_dbus_call_info(struct push_connection_s *conn, push_result_cb cb, void *user_data);
 
 /**
  * @brief Gets the payload data in the notification.
@@ -250,8 +297,10 @@ int push_get_notification_message(push_notification_h notification,
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @privlevel public
  * @param[in] notification The notification handle
- * @param[out] received_time The received time of the notification message\n
- *                           The @a received_time is based on UTC.
+ * @param[out] timestamp The timestamp information that the application server
+ *						optinally added to this notification when sending it.
+ *						Typically, it is the number of milliseconds from a given
+ *						standard time in the server.
  * @return @c 0 on success,
  *         otherwise a negative error value
  * @retval #PUSH_ERROR_NONE Successful
@@ -261,7 +310,7 @@ int push_get_notification_message(push_notification_h notification,
  * @see push_notify_cb()
  * @see push_request_unread_notification()
  */
-int push_get_notification_time(push_notification_h notification, long long int *received_time);
+int push_get_notification_time(push_notification_h notification, long long int *timestamp);
 
 /**
  * @brief Gets the sender of the notification.
@@ -395,10 +444,10 @@ int push_request_unread_notification(push_connection_h connection);
 /**
  * @brief Retrieves the notification with the notification token
  * @details When the push service forcibly launches the application to\n
- 			deliver a notification, a unique token for the notification\n
- 			is generated and delivered to the application as a bundle.\n
- 			Using this API with this token, the application can get\n
- 			the notification.
+			deliver a notification, a unique token for the notification\n
+			is generated and delivered to the application as a bundle.\n
+			Using this API with this token, the application can get\n
+			the notification.
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/push
@@ -415,7 +464,7 @@ int push_request_unread_notification(push_connection_h connection);
  * @retval #PUSH_SERVICE_ERROR_OUT_OF_MEMORY Out of memory
  * @retval #PUSH_SERVICE_ERROR_NOT_CONNECTED Connection to the daemon failed
  * @retval #PUSH_SERVICE_ERROR_PERMISSION_DENIED No push privilege
- * @see push_free_notificaiton()
+ * @see push_free_notification()
  * @see app_control_get_operation()
  */
 int push_get_notification_using_token(const char *noti_token, push_notification_h *noti);
