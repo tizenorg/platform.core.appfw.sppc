@@ -2,7 +2,7 @@
 
 Name:       push
 Summary:    Push services and client library
-Version:    0.4.33
+Version:    0.4.38
 Release:    1
 Group:      Application Framework/Service
 License:    Apache-2.0
@@ -163,6 +163,20 @@ cp -a x86/bin/push_tool %{buildroot}%{_bindir}
 cp -a x86/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	x86/bin/pushlog_tool
+%endif
+%endif
+
+%if "%{profile}" == "tv"
+#libpush
+cp -a x86_tv/lib/libpush.so.* %{buildroot}%{_libdir}
+#libpus-devel
+cp -a x86_tv/lib/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a x86_tv/bin/pushd %{buildroot}%{_bindir}
+cp -a x86_tv/bin/push_tool %{buildroot}%{_bindir}
+cp -a x86_tv/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	x86_tv/bin/pushlog_tool
 %endif
 %endif
 
