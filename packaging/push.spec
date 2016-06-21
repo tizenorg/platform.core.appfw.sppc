@@ -87,7 +87,6 @@ cp -a push.pc %{buildroot}%{_libdir}/pkgconfig/
 mkdir -p %{buildroot}/usr/share/push/
 mkdir -p %{buildroot}%{_bindir}
 
-
 %ifarch %{arm}
 
 %if "%{profile}" == "tv"
@@ -116,9 +115,9 @@ cp -a arm_wearable/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	arm_wearable/bin/pushlog_tool
 %endif
-%else
+%endif
 
-#mobile & etc...
+%if "%{profile}" == "mobile"
 #libpush
 cp -a arm/lib/libpush.so.* %{buildroot}%{_libdir}
 #libpus-devel
@@ -132,6 +131,19 @@ cp -a arm/share/push/*.cer %{buildroot}/usr/share/push/
 %endif
 %endif
 
+%if "%{profile}" == "ivi"
+#libpush
+cp -a arm/lib/libpush.so.* %{buildroot}%{_libdir}
+#libpus-devel
+cp -a arm/lib/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a arm/bin/pushd %{buildroot}%{_bindir}
+cp -a arm/bin/push_tool %{buildroot}%{_bindir}
+cp -a arm/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	arm/bin/pushlog_tool
+%endif
+%endif
 %endif
 
 
@@ -178,9 +190,23 @@ cp -a x86_wearable/share/push/*.cer %{buildroot}/usr/share/push/
 %if %{_support_weblog}
 	x86_wearable/bin/pushlog_tool
 %endif
-%else
+%endif
 
-#mobile & etc...
+%if "%{profile}" == "mobile"
+#libpush
+cp -a x86/lib/libpush.so.* %{buildroot}%{_libdir}
+#libpus-devel
+cp -a x86/lib/libpush.so %{buildroot}%{_libdir}
+#push-bin
+cp -a x86/bin/pushd %{buildroot}%{_bindir}
+cp -a x86/bin/push_tool %{buildroot}%{_bindir}
+cp -a x86/share/push/*.cer %{buildroot}/usr/share/push/
+%if %{_support_weblog}
+	x86/bin/pushlog_tool
+%endif
+%endif
+
+%if "%{profile}" == "ivi"
 #libpush
 cp -a x86/lib/libpush.so.* %{buildroot}%{_libdir}
 #libpus-devel
