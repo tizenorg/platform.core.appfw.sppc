@@ -2,7 +2,7 @@
 
 Name:       push
 Summary:    Push services and client library
-Version:    0.4.39
+Version:    0.4.40
 Release:    1
 Group:      Application Framework/Service
 License:    Apache-2.0
@@ -62,9 +62,9 @@ Push service tool
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}%{_unitdir_user}/default.target.wants
-install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir_user}/pushd.service
-ln -s ../pushd.service %{buildroot}%{_unitdir_user}/default.target.wants/pushd.service
+mkdir -p %{buildroot}%{_unitdir}/multi-user.target.wants
+install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/pushd.service
+%install.service multi-user.target.wants pushd.service
 
 mkdir -p %{buildroot}/usr/share/license
 cp -f LICENSE %{buildroot}/usr/share/license/%{name}
@@ -207,12 +207,15 @@ cp -a x86_64/share/push/*.cer %{buildroot}/usr/share/push/
 
 
 %post bin
-#mkdir -p /usr/dbspace
-#sqlite3 /usr/dbspace/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
-#chown system:system /usr/dbspace/.push.db
-#chown system:system /usr/dbspace/.push.db-journal
-#chmod 660 /usr/dbspace/.push.db
-#chmod 660 /usr/dbspace/.push.db-journal
+mkdir -p %{buildroot}%{TZ_SYS_DB}
+sqlite3 %{buildroot}%{TZ_SYS_DB}/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
+chown service_fw:service_fw %{TZ_SYS_DB}/.push.db
+chown service_fw:service_fw %{TZ_SYS_DB}/.push.db-journal
+chmod 660 %{TZ_SYS_DB}/.push.db
+chmod 660 %{TZ_SYS_DB}/.push.db-journal
+
+chsmack -a "*" %{TZ_SYS_DB}/.push.db
+chsmack -a "*" %{TZ_SYS_DB}/.push.db-journal
 
 %post -n libpush
 /sbin/ldconfig
@@ -221,7 +224,7 @@ cp -a x86_64/share/push/*.cer %{buildroot}/usr/share/push/
 
 %files -n libpush
 %manifest libpush.manifest
-%attr(644,system,system)%{_libdir}/libpush.so.*
+%attr(644,service_fw,service_fw)%{_libdir}/libpush.so.*
 
 %files -n libpush-devel
 %{_includedir}/*.h
@@ -231,17 +234,17 @@ cp -a x86_64/share/push/*.cer %{buildroot}/usr/share/push/
 %files bin
 %manifest push-bin.manifest
 %{_bindir}/pushd
-%attr(644,system,system)/usr/share/push/*.cer
-%attr(644,system,system)/usr/share/license/%{name}
+%attr(644,service_fw,service_fw)/usr/share/push/*.cer
+%attr(644,service_fw,service_fw)/usr/share/license/%{name}
 
 # This is a certificate file to access to logging server by HTTPS.
 %if %{_support_weblog}
-%attr(644,system,system)/usr/share/push/push_sslkey.pem
-%attr(644,system,system)/usr/share/push/prd-dl-key.pem
+%attr(644,service_fw,service_fw)/usr/share/push/push_sslkey.pem
+%attr(644,service_fw,service_fw)/usr/share/push/prd-dl-key.pem
 %endif
 
-%{_unitdir_user}/pushd.service
-%{_unitdir_user}/default.target.wants/pushd.service
+%{_unitdir}/pushd.service
+%{_unitdir}/multi-user.target.wants/pushd.service
 
 %files tool
 %manifest push-tool.manifest
