@@ -4,11 +4,13 @@ After=dbus.service
 
 [Service]
 Type=simple
+SmackProcessLabel=System
 ExecStart=/usr/bin/pushd
 Restart=always
 RestartSec=1
 MemoryLimit=10M
+User=service_fw
+Group=service_fw
 
 [Install]
-WantedBy=default.target
-
+WantedBy=multi-user.target
