@@ -64,7 +64,7 @@ Push service tool
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_unitdir}/multi-user.target.wants
 install -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/pushd.service
-%install.service multi-user.target.wants pushd.service
+%install_service multi-user.target.wants pushd.service
 
 mkdir -p %{buildroot}/usr/share/license
 cp -f LICENSE %{buildroot}/usr/share/license/%{name}
