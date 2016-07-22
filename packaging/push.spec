@@ -207,15 +207,6 @@ cp -a x86_64/share/push/*.cer %{buildroot}/usr/share/push/
 
 
 %post bin
-mkdir -p %{buildroot}%{TZ_SYS_DB}
-sqlite3 %{buildroot}%{TZ_SYS_DB}/.push.db "PRAGMA journal_mode = PERSIST; create table a(a); drop table a;" > /dev/null
-chown service_fw:service_fw %{TZ_SYS_DB}/.push.db
-chown service_fw:service_fw %{TZ_SYS_DB}/.push.db-journal
-chmod 660 %{TZ_SYS_DB}/.push.db
-chmod 660 %{TZ_SYS_DB}/.push.db-journal
-
-chsmack -a "*" %{TZ_SYS_DB}/.push.db
-chsmack -a "*" %{TZ_SYS_DB}/.push.db-journal
 
 %post -n libpush
 /sbin/ldconfig
